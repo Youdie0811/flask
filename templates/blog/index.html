@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Posts{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for post in posts %}
+
+<div class="card">
+    <h5 class="card-header">{{ post['title']}}</h5>
+    <div class="card-body">
+      <h4 class="card-text">販売価格:{{ post['body'] }}円</h4>
+        <div class="card-body1">
+        <h4 class="card-text">仕入値+手数料+送料:{{ post['body1'] }}円</h4>
+            <div class="card-body2">
+            <h4 class="card-text">純利益:{{post['body2'] }}円</h4>
+        <p class="card-title">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</p>
+      {% if g.user['id'] == post['author_id'] %}
+      <a href="{{ url_for('blog.update' , id=post['id']) }}" class="btn btn-success">Edit</a>
+        {% endif %}
+     </div>
+   </div>
+   <br>
+  {% endfor %}
+{% endblock %}
